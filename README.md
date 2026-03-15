@@ -1,140 +1,112 @@
-# 🖐️ Virtual Cursor using Hand Gestures
+# Virtual Cursor Controller — Windows Edition
 
-A **Python-based Virtual Cursor system** that allows users to control their computer mouse using **hand gestures through a webcam**.
-This project uses **Computer Vision and Hand Tracking** to detect hand landmarks and convert gestures into mouse actions in real time.
-
-The system eliminates the need for a physical mouse and enables **touchless human-computer interaction**.
+Control your laptop cursor entirely with **hand gestures** via your webcam.
 
 ---
 
-# 🚀 Features
+## File Structure
 
-* Real-time **hand tracking**
-* **Cursor movement** using hand motion
-* **Left Click**
-* **Right Click**
-* **Double Click**
-* **Drag and Drop**
-* **Scroll Control**
-* **Zoom In / Zoom Out**
-* **Copy & Paste gestures**
-* **Screenshot capture**
-* **Adjustable cursor sensitivity**
-* **Toggle system ON/OFF with keyboard shortcut**
-
----
-
-# 🧠 Technologies Used
-
-* **Python**
-* **OpenCV (cv2)** – Webcam video processing
-* **MediaPipe** – Hand landmark detection
-* **PyAutoGUI** – Mouse and keyboard control
-* **NumPy** – Numerical computations
-* **Keyboard** – Hotkey detection
-* **Threading** – Real-time performance
-* **Logging** – Event tracking
-* **Deque (collections)** – Gesture smoothing
-
----
-
-# ⚙️ How It Works
-
-1. The webcam captures video frames.
-2. OpenCV processes the video stream.
-3. MediaPipe detects **21 hand landmarks**.
-4. Finger positions and distances are analyzed.
-5. Specific **hand gestures trigger mouse actions**.
-6. PyAutoGUI performs the corresponding system operations.
-
----
-
-# 🖐️ Supported Gestures
-
-| Gesture        | Action       |
-| -------------- | ------------ |
-| Move Hand      | Move Cursor  |
-| Pinch Index    | Left Click   |
-| Thumb Alone    | Right Click  |
-| Double Pinch   | Double Click |
-| Fist Hold      | Drag         |
-| Two Fingers    | Scroll       |
-| Open Palm      | Screenshot   |
-| Thumb Up       | Copy         |
-| Thumb Down     | Paste        |
-| Pinch + Spread | Zoom         |
-
----
-
-# 🖥️ Requirements
-
-Install the required Python libraries:
-
-```bash
-pip install opencv-python mediapipe pyautogui numpy keyboard
+```
+virtual_cursor/
+  hand_cursor.py          <- Main Python script
+  requirements.txt        <- Python packages list
+  install.bat             <- Double-click to install packages
+  start.bat               <- Double-click to run manually
+  startup_silent.vbs      <- Drop into Startup folder for auto-start at login
+  README.md               <- This file
+  .vscode/
+    launch.json           <- VS Code Run config (press F5)
 ```
 
 ---
 
-# ▶️ How to Run
+## Step 1 — Install
 
-1. Clone the repository
+Double-click **`install.bat`**
 
-```bash
-git clone https://github.com/yourusername/hand-gesture-virtual-cursor.git
+Or run manually in terminal:
 ```
-
-2. Navigate to the project folder
-
-```bash
-cd hand-gesture-virtual-cursor
-```
-
-3. Run the program
-
-```bash
-python hand_cursor.py
+pip install -r requirements.txt
 ```
 
 ---
 
-# ⌨️ Controls
+## Step 2 — Run in VS Code
 
-| Key              | Function              |
-| ---------------- | --------------------- |
-| CTRL + SHIFT + H | Toggle Virtual Cursor |
-| CTRL + SHIFT + S | Increase Sensitivity  |
-| CTRL + SHIFT + F | Decrease Sensitivity  |
-| Q                | Quit Application      |
+1. Open the `virtual_cursor` folder in VS Code
+2. Press **F5**
+3. Select **"Run Virtual Cursor"**
 
----
-
-# 🎯 Applications
-
-* Touchless computer interaction
-* Accessibility tools
-* Smart interfaces
-* Computer vision research
-* Gesture-based control systems
+Or double-click **`start.bat`** to run without VS Code.
 
 ---
 
-# 📌 Future Improvements
+## Step 3 — Auto-Start on Windows Login
 
-* Multi-hand gesture support
-* Gesture customization
-* GUI control panel
-* Mobile camera integration
-* AI gesture learning
+1. Press **Win + R**, type `shell:startup`, press **Enter**
+2. Copy **`startup_silent.vbs`** into that folder
+3. Done — Virtual Cursor will silently start every time you log in
 
----
-
-# 👨‍💻 Author
-
-Developed by **Druva Kumar V**
+**To disable auto-start:**
+- Go back to `shell:startup` and delete `startup_silent.vbs`
 
 ---
 
-# ⭐ Support
+## Gestures
 
-If you like this project, please **star the repository** ⭐ to support the work.
+| Gesture | Action |
+|---|---|
+| Index finger up | Move cursor |
+| Thumb + index pinch | Left click |
+| Thumb + middle pinch | Right click |
+| Fist or open palm | Freeze cursor |
+| **Ctrl + Shift + H** | Toggle ON / OFF |
+
+> Keep your hand 30–60 cm from the webcam for best results.
+
+---
+
+## Configuration
+
+Open `hand_cursor.py` and edit the top section:
+
+| Setting | Default | What it does |
+|---|---|---|
+| `TOGGLE_HOTKEY` | `ctrl+shift+h` | Your toggle hotkey |
+| `CAMERA_INDEX` | `0` | Webcam number (try 1 if 0 fails) |
+| `SMOOTHING_FRAMES` | `5` | Cursor smoothness (3=fast, 8=smooth) |
+| `CLICK_THRESHOLD` | `0.04` | How tight the pinch needs to be |
+| `CLICK_COOLDOWN` | `0.4` | Min seconds between clicks |
+| `MOVEMENT_SPEED` | `1.0` | Cursor speed multiplier |
+| `SHOW_WEBCAM_WINDOW` | `True` | Show or hide webcam preview |
+
+---
+
+## How to Stop
+
+| Method | How |
+|---|---|
+| Hotkey | Press `Ctrl + Shift + H` to pause/resume |
+| Webcam window | Press `Q` or `Esc` |
+| VS Code | Click the red square Stop button |
+| Terminal | Press `Ctrl + C` |
+
+---
+
+## Troubleshooting
+
+**Webcam not opening**
+→ Change `CAMERA_INDEX = 1` or `= 2` in `hand_cursor.py`
+
+**Cursor too fast / slow**
+→ Adjust `MOVEMENT_SPEED` (0.5 = slower, 2.0 = faster)
+
+**Accidental clicks**
+→ Increase `CLICK_THRESHOLD` to `0.06`
+
+**Hotkey not working**
+→ Run VS Code or `start.bat` as Administrator
+
+**startup_silent.vbs not launching at startup**
+→ Make sure Python is added to Windows PATH
+→ Or change `pythonExe` in the .vbs file to the full Python path
